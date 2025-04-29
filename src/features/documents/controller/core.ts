@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { z } from 'zod';
 import { Router } from 'express';
-import { APIResponse, recognizeTextFromFile } from '../../../services';
+import { APIResponse, recognizeTextFromImage } from '../../../services';
 import { uploadMiddleware } from '../middleware/upload';
 import { fileSchema } from './schemas';
 
@@ -12,7 +12,7 @@ route.post('/', uploadMiddleware, async (req, res) => {
     try {
         const { path } = req.file as z.infer<typeof fileSchema.shape.file>;
 
-        const data = await recognizeTextFromFile(path);
+        const data = await recognizeTextFromImage(path);
 
         res.status(200).json({ message: data });
     } catch (error) {

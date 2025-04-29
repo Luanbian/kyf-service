@@ -5,7 +5,7 @@ import { recognize } from 'tesseract.js';
 
 const logger = debug('services:tesseract');
 
-export const recognizeTextFromFile = async (filePath: string) => {
+export const recognizeTextFromImage = async (filePath: string) => {
     const file = path.resolve(process.cwd(), filePath);
 
     try {
