@@ -1,2 +1,5 @@
 import 'dotenv/config';
-import './services';
+import { app } from './services';
+import * as features from './features';
+
+app.use(features.documents.controller.router);
