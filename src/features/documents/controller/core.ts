@@ -1,7 +1,11 @@
 import debug from 'debug';
 import { z } from 'zod';
 import { Router } from 'express';
-import { APIResponse, recognizeTextFromImage } from '../../../services';
+import {
+    type APIResponse,
+    recognizeTextFromImage,
+    pdfToText,
+} from '../../../services';
 import { uploadMiddleware } from '../middleware/upload';
 import { fileSchema } from './schemas';
 
@@ -10,9 +14,16 @@ const route = Router();
 
 route.post('/', uploadMiddleware, async (req, res) => {
     try {
-        const { path } = req.file as z.infer<typeof fileSchema.shape.file>;
+        const { path, mimetype } = req.file as z.infer<
+            typeof fileSchema.shape.file
+        >;
 
-        const data = await recognizeTextFromImage(path);
+        let data: string;
+        if (mimetype === 'application/pdf') {
+            data = await pdfToText(path);
+        } else {
+            data = await recognizeTextFromImage(path);
+        }
 
         res.status(200).json({ message: data });
     } catch (error) {
