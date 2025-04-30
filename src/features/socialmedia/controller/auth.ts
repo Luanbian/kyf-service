@@ -2,15 +2,14 @@ import debug from 'debug';
 import axios from 'axios';
 import crypto from 'crypto';
 import { Router } from 'express';
-import { APIResponse } from '../../../services';
+import { APIResponse, signToken } from '../../../services';
 import {
     DISCORD_API_URL,
     DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET,
     DISCORD_REDIRECT_URI,
+    BASE_URL,
 } from '../../../constants';
-import { getCustomer } from '../useCase/getCustomer';
-import { BASE_URL } from '../../../constants/front';
 
 const logger = debug('features:socialmedia:controller:core');
 const route = Router();
@@ -81,8 +80,12 @@ route.get('/auth/callback', async (req, res) => {
 
         const { access_token: accessToken } = tokenResponse.data;
 
-        const customer = await getCustomer(accessToken);
-        logger('Customer:', customer);
+        const sessionToken = signToken(accessToken);
+
+        res.cookie('authToken', sessionToken, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000, // 24h
+        });
 
         res.redirect(BASE_URL);
     } catch (error) {
