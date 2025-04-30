@@ -10,6 +10,7 @@ import {
     DISCORD_REDIRECT_URI,
 } from '../../../constants';
 import { getCustomer } from '../useCase/getCustomer';
+import { BASE_URL } from '../../../constants/front';
 
 const logger = debug('features:socialmedia:controller:core');
 const route = Router();
@@ -83,15 +84,10 @@ route.get('/auth/callback', async (req, res) => {
         const customer = await getCustomer(accessToken);
         logger('Customer:', customer);
 
-        res.status(200).json({ message: 'OK' });
+        res.redirect(BASE_URL);
     } catch (error) {
         logger('Error in callback discord:', error);
-        res.status(500).json({
-            code: 'features.socialmedia.auth.callback.error',
-            message: 'Error in callback discord',
-            args: error,
-            data: {},
-        } as APIResponse);
+        res.redirect(BASE_URL);
     }
 });
 
