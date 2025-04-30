@@ -9,3 +9,10 @@ export interface APIResponse<T = unknown, E = any> {
     args?: E;
     data?: T;
 }
+
+declare module 'express-session' {
+    interface SessionData {
+        discordState?: string;
+        code?: string;
+    }
+}

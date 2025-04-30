@@ -2,7 +2,8 @@ import debug from 'debug';
 import os from 'os';
 import express from 'express';
 import cors from 'cors';
-import { EXPRESS_PORT } from '../../constants';
+import session from 'express-session';
+import { EXPRESS_PORT, SESSION_SECRET } from '../../constants';
 import { APIEcho, APIResponse } from './types';
 import pkgJson from '../../../package.json';
 
@@ -14,6 +15,15 @@ app.set('trust proxy', true);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// session
+app.use(
+    session({
+        secret: SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 
 // heath check
 app.get('/', (_req, res) => {
