@@ -1,23 +1,18 @@
 import debug from 'debug';
-import { z } from 'zod';
 import { Request, Response, Router } from 'express';
 import { APIResponse } from '../../../services';
-import { checkAuth } from '../middleware/checkAuth';
-import { authSchema } from './schema';
-import { getCustomer } from '../useCase/getCustomer';
+import { validateCustomerBody } from '../middleware/checkCustomerBody';
+import { Customer } from './schema';
 
-const logger = debug('features:documents:controller:core');
+const logger = debug('features:customer:controller:core');
 const route = Router();
 
-route.use(checkAuth);
-
-route.get('/', async (req: Request, res: Response) => {
+route.post('/', validateCustomerBody, async (req: Request, res: Response) => {
     try {
-        const { accessToken } = req.body.auth as z.infer<typeof authSchema>;
+        const { customer } = req.body as { customer: Customer };
+        console.log(customer);
 
-        const customer = await getCustomer(accessToken);
-
-        res.status(200).json({ message: JSON.stringify(customer) });
+        res.status(200).json({ message: 'Ok' });
     } catch (error) {
         logger('Error in Get /customer:', error);
         res.status(500).json({

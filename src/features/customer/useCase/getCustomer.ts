@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { DISCORD_API_URL, DISCORD_GUILD_ID } from '../../../constants';
-import { Customer } from '../controller/schema';
+import { CustomerDiscord } from '../controller/schema';
 
-export const getCustomer = async (
+export const getCustomerDiscord = async (
     customerAccessToken: string
-): Promise<Customer> => {
+): Promise<CustomerDiscord> => {
     try {
         const customer = await axios.get(`${DISCORD_API_URL}/users/@me`, {
             headers: {
