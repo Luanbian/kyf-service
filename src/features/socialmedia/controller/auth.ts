@@ -83,7 +83,6 @@ route.get('/auth/callback', async (req, res) => {
         const sessionToken = signToken(accessToken);
 
         res.cookie('authToken', sessionToken, {
-            httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000, // 24h
         });
 
