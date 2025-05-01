@@ -31,4 +31,36 @@ route.post('/', validateCustomerBody, async (req: Request, res: Response) => {
     }
 });
 
+route.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params as { id: string };
+
+        const customer = await model.findCustomerById(id);
+        if (!customer) {
+            res.status(404).json({
+                code: 'features.customer.core.get.notfound',
+                message: 'Customer not found',
+                args: {},
+                data: {},
+            } as APIResponse);
+            return;
+        }
+
+        res.status(200).json({
+            code: 'features.customer.core.get.success',
+            message: 'Customer retrieved successfully',
+            args: {},
+            data: customer,
+        } as APIResponse<model.CustomersDocument>);
+    } catch (error) {
+        logger('Error in Get /customer:', error);
+        res.status(500).json({
+            code: 'features.customer.core.get.error',
+            message: 'Error to get customer',
+            args: error,
+            data: {},
+        } as APIResponse);
+    }
+});
+
 export { route };

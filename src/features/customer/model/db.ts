@@ -13,3 +13,6 @@ export const updateDiscord = async ({
     discord,
 }: UpdateCustomerDiscordParams) =>
     customers().updateOne({ _id: new ObjectId(id) }, { $set: { discord } });
+
+export const findCustomerById = async (id: string) =>
+    customers().findOne({ _id: new ObjectId(id) });
