@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { Db, MongoClient, ObjectId } from 'mongodb';
+import { Db, MongoClient, ObjectId, InsertOneResult } from 'mongodb';
 import { MONGO_DB, MONGO_URL } from '../../constants';
 
 const logger = debug('services:mongo');
@@ -32,4 +32,4 @@ const getDb = () => {
     return status.db;
 };
 
-export { getDb, client, connect, status, ObjectId };
+export { getDb, client, connect, status, ObjectId, InsertOneResult };
