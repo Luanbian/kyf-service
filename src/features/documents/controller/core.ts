@@ -8,12 +8,15 @@ import {
 } from '../../../services';
 import { uploadMiddleware } from '../middleware/upload';
 import { fileSchema } from './schemas';
+import * as modelCustomer from '../../customer/model';
+import { extractValidCPFs } from '../../../utils/recognizeCPF';
 
 const logger = debug('features:documents:controller:core');
 const route = Router();
 
-route.post('/', uploadMiddleware, async (req, res) => {
+route.post('/:id', uploadMiddleware, async (req, res) => {
     try {
+        const { id } = req.params as { id: string };
         const { path, mimetype } = req.file as z.infer<
             typeof fileSchema.shape.file
         >;
@@ -25,7 +28,15 @@ route.post('/', uploadMiddleware, async (req, res) => {
             data = await recognizeTextFromImage(path);
         }
 
-        res.status(200).json({ message: data });
+        const cpfFound = extractValidCPFs(data);
+        await modelCustomer.updateDocuments({ id, doc: { cpf: cpfFound[0] } });
+
+        res.status(200).json({
+            code: 'features.documents.core.post.success',
+            message: 'Document uploaded successfully',
+            args: {},
+            data: {},
+        } as APIResponse);
     } catch (error) {
         logger('Error in POST /documents:', error);
         res.status(500).json({

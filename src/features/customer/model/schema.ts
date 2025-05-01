@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ObjectId } from '../../../services';
+import { DocumentSchema } from '../../documents/model/schema';
 
 export const COLLECTION_CUSTOMERS = 'customers';
 
@@ -32,6 +33,7 @@ export const CustomerSchema = z.object({
         .optional(),
     interests: z.array(z.string()),
     discord: CustomerDiscordSchema,
+    documents: DocumentSchema,
 });
 
 export type Customers = z.infer<typeof CustomerSchema>;
