@@ -35,8 +35,8 @@ route.post('/:id', uploadMiddleware, async (req, res) => {
             code: 'features.documents.core.post.success',
             message: 'Document uploaded successfully',
             args: {},
-            data: {},
-        } as APIResponse);
+            data: { cpf: cpfFound[0] },
+        } as APIResponse<{ cpf: string }>);
     } catch (error) {
         logger('Error in POST /documents:', error);
         res.status(500).json({
