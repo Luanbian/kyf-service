@@ -26,3 +26,6 @@ export const updateDocuments = async ({ id, doc }: UpdateDocumentsParams) =>
         { _id: new ObjectId(id) },
         { $set: { documents: doc } }
     );
+
+export const findCustomerByEmail = async (email: string) =>
+    customers().findOne({ email });

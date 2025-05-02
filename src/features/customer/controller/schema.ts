@@ -6,7 +6,7 @@ export const customerSchema = z.object({
     phone: z.string(),
     cpf: z.string(),
     birthDate: z.string(),
-    adress: z
+    address: z
         .object({
             street: z.string(),
             number: z.string(),
