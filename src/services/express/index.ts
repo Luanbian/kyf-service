@@ -14,7 +14,7 @@ const app = express();
 app.set('trust proxy', true);
 app.use(
     cors({
-        origin: ['http://localhost:5173'],
+        origin: ['https://appsbian.com.br'],
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true,
     })
