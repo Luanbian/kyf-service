@@ -7,14 +7,30 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: password
+        env_file:
+            - .env
         volumes:
             - mongo-data:/data/db
+        networks:
+            - app-network
 
     furia-api:
         image: luanbian/furia-api
+        container_name: furia-api
         ports:
             - '3001:3001'
         env_file:
             - .env
+        environment:
+            - MONGODB_URI=mongodb://root:password@mongodb:27017
+        depends_on:
+            - mongodb
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
 volumes:
     mongo-data:
