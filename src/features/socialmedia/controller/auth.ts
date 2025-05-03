@@ -85,10 +85,13 @@ route.get('/auth/callback', async (req, res) => {
         res.cookie('authToken', sessionToken, {
             maxAge: 24 * 60 * 60 * 1000, // 24h
             httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
+            secure: false,
+            sameSite: 'lax',
             path: '/',
         });
+
+        res.header('Access-Control-Allow-Origin', BASE_URL);
+        res.header('Access-Control-Allow-Credentials', 'true');
 
         res.redirect(BASE_URL);
     } catch (error) {
