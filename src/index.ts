@@ -2,6 +2,6 @@ import 'dotenv/config';
 import { app } from './services';
 import * as features from './features';
 
-app.use(features.documents.controller.router);
-app.use(features.socialmedia.controller.router);
-app.use(features.customer.controller.router);
+app.use('/api', features.documents.controller.router);
+app.use('/api', features.socialmedia.controller.router);
+app.use('/api', features.customer.controller.router);

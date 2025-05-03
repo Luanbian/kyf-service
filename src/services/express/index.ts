@@ -14,7 +14,7 @@ const app = express();
 app.set('trust proxy', true);
 app.use(
     cors({
-        origin: ['https://appsbian.com.br'],
+        origin: ['https://appsbian.com.br', 'http://localhost:5173'],
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true,
     })
@@ -32,7 +32,7 @@ app.use(
 );
 
 // heath check
-app.get('/', (_req, res) => {
+app.get('/api', (_req, res) => {
     res.status(200).json({
         code: 'echo',
         message: 'OK',
