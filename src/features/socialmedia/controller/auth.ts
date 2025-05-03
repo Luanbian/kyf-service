@@ -84,6 +84,10 @@ route.get('/auth/callback', async (req, res) => {
 
         res.cookie('authToken', sessionToken, {
             maxAge: 24 * 60 * 60 * 1000, // 24h
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            path: '/',
         });
 
         res.redirect(BASE_URL);
