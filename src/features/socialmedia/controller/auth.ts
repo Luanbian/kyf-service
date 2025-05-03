@@ -82,18 +82,7 @@ route.get('/auth/callback', async (req, res) => {
 
         const sessionToken = signToken(accessToken);
 
-        res.cookie('authToken', sessionToken, {
-            maxAge: 24 * 60 * 60 * 1000, // 24h
-            httpOnly: false,
-            secure: false,
-            sameSite: 'lax',
-            path: '/',
-        });
-
-        res.header('Access-Control-Allow-Origin', BASE_URL);
-        res.header('Access-Control-Allow-Credentials', 'true');
-
-        res.redirect(BASE_URL);
+        res.redirect(`${BASE_URL}?token=${encodeURIComponent(sessionToken)}`);
     } catch (error) {
         logger('Error in callback discord:', error);
         res.redirect(BASE_URL);
